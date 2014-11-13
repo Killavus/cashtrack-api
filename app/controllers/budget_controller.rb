@@ -10,7 +10,7 @@ class BudgetController < ApplicationController
     Budget.create!(name: budget_params[:name])
     head :created
   rescue ActiveRecord::RecordInvalid => exc
-    render status: :unprocessable_entity, json: { errors: exc.record.errors.messages }
+    render_validation_errors(exc)
   end
 
   private
