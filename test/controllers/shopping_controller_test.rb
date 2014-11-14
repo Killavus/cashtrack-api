@@ -24,4 +24,5 @@ class ShoppingControllerTest < ActionController::TestCase
     @budget ||= Budget.create!(name: "Test")
   end
 
+
 end
