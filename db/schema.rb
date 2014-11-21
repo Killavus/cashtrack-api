@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141114123920) do
+ActiveRecord::Schema.define(version: 20141121142855) do
 
   create_table "budgets", force: true do |t|
     t.string   "name"
@@ -27,6 +27,13 @@ ActiveRecord::Schema.define(version: 20141114123920) do
   end
 
   add_index "payments", ["budget_id"], name: "index_payments_on_budget_id"
+
+  create_table "products", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "purchase_id"
+  end
 
   create_table "purchases", force: true do |t|
     t.integer  "price"
