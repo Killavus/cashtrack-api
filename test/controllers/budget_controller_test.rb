@@ -8,7 +8,7 @@ class BudgetControllerTest < ActionController::TestCase
   end
 
   def test_shows_budget_name
-    post :create, budget: { name: 'Test' }
+    create_budget 'Test'
     budget = Budget.find_by(name: 'Test')
 
     get :show, id: budget.id
@@ -17,14 +17,14 @@ class BudgetControllerTest < ActionController::TestCase
   end
 
   def test_create_does_not_create_budget_if_there_is_no_name
-    post :create, budget: { name: '' }
+    create_budget ''
 
     assert_response :unprocessable_entity
     assert_equal(expected_response_with_no_name, json_response)
   end
 
   def test_create_does_not_create_budget_with_less_than_3_letters
-    post :create, budget: { name: 'fo' }
+    create_budget 'fo'
 
     assert_response :unprocessable_entity
     assert_equal(expected_response_with_short_name, json_response)
@@ -40,6 +40,10 @@ class BudgetControllerTest < ActionController::TestCase
   private
   def json_response
     JSON.parse(@response.body)
+  end
+
+  def create_budget(name_value)
+    post :create, budget: { name: name_value}
   end
 
   def expected_response_with_short_name
