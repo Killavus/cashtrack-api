@@ -12,4 +12,8 @@ Rails.application.routes.draw do
   resources :purchases, only: [] do
     resources :products, only: :create
   end
+
+  resources :product, only: [] do
+    resources :prices, only: :create
+  end
 end

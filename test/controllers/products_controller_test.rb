@@ -36,7 +36,7 @@ class ProductsControllerTest < ActionController::TestCase
   end
 
   def create_product(name_value)
-    post :create, purchase_id: purchase, product: { name: name_value}
+    post :create, purchase_id: purchase, product: {name: name_value }
   end
 
   def purchase()
