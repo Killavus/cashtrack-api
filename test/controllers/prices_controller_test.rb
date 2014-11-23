@@ -46,7 +46,7 @@ class PricesControllerTest < ActionController::TestCase
   end
 
   def product
-    @product ||= Product.create!(purchase_id: purchase, name: "test")
+    @product ||= Product.create!(purchase_id: purchase, name: "balid", bar_code: "654654")
 
   end
 
