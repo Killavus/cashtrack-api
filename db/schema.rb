@@ -11,13 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141123145821) do
+ActiveRecord::Schema.define(version: 20141123164448) do
 
   create_table "budgets", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "localizations", force: true do |t|
+    t.float    "latitude"
+    t.float    "longitude"
+    t.integer  "price_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "localizations", ["price_id"], name: "index_localizations_on_price_id"
 
   create_table "payments", force: true do |t|
     t.integer  "value"
