@@ -53,4 +53,5 @@ class BudgetControllerTest < ActionController::TestCase
   def expected_response_with_no_name
     { "errors" => { "name" => ["can't be blank", "is too short (minimum is 3 characters)"] } }
   end
+
 end
