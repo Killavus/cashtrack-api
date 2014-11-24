@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   end
   resources :shopping, only: [] do
     resources :purchases, only: :create
-
   end
 
   resources :purchases, only: [] do
@@ -20,4 +19,6 @@ Rails.application.routes.draw do
   resources :prices, only:[] do
     resources :localization, only: :create
   end
+
+  resources :authentication, only: [:create, :index]
 end

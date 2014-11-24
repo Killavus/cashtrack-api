@@ -13,6 +13,4 @@ class PaymentsController < ApplicationController
   def payment_params
     params.require(:payment).permit(:value)
   end
-
-
 end
