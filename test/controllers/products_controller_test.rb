@@ -4,13 +4,15 @@ class ProductsControllerTest < ActionController::TestCase
 
   def test_create_product_must_have_right_name
     create_product("test","456461")
+
     assert_response :created
     assert(purchase.product != nil, "product is not created")
     assert(purchase.product.name == "test", "product has invalid value")
   end
 
   def test_create_product_must_have_right_bar_code
-    create_product("valid","123456789")
+    create_product("valid", "123456789")
+
     assert_response :created
     assert(purchase.product != nil, "product is not created")
     assert(purchase.product.bar_code == "123456789", "product has invalid bar code")
@@ -32,6 +34,7 @@ class ProductsControllerTest < ActionController::TestCase
 
   def test_create_must_have_payments
     post :create, purchase_id: "invalid", product: { name: "test", bar_code: "12851854"}
+
     assert_response :not_found
   end
 
@@ -42,13 +45,7 @@ class ProductsControllerTest < ActionController::TestCase
     assert(Product.find_by(name: "kiełbasa").present?, "Product is not created")
   end
 
-
   private
-
-  def json_response
-    JSON.parse(@response.body)
-  end
-
   def create_product(name_value, bar_code_value)
     post :create, purchase_id: purchase, product: {name: name_value, bar_code: bar_code_value }
   end

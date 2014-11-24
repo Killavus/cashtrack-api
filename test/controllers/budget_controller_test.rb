@@ -38,10 +38,6 @@ class BudgetControllerTest < ActionController::TestCase
   end
 
   private
-  def json_response
-    JSON.parse(@response.body)
-  end
-
   def create_budget(name_value)
     post :create, budget: { name: name_value}
   end
@@ -53,5 +49,4 @@ class BudgetControllerTest < ActionController::TestCase
   def expected_response_with_no_name
     { "errors" => { "name" => ["can't be blank", "is too short (minimum is 3 characters)"] } }
   end
-
 end

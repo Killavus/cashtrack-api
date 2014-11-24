@@ -52,13 +52,7 @@ class PurchasesControllerTest < ActionController::TestCase
     assert(shopping.purchases.first.product.id == product_to_test.id, "Purchase create other product with same bar code")
   end
 
-
   private
-
-  def json_response
-    JSON.parse(@response.body)
-  end
-
   def create_purchase(value, product_params)
     post :create, shopping_id: shopping.id, purchase: { price: value, product_params: product_params }
   end
@@ -66,8 +60,8 @@ class PurchasesControllerTest < ActionController::TestCase
   def budget
     @budget ||= Budget.create!(name: "test")
   end
-  def shopping
 
+  def shopping
     @shopping ||= Shopping.create! budget_id: budget.id
   end
 
@@ -82,7 +76,4 @@ class PurchasesControllerTest < ActionController::TestCase
   def expected_response_with_negative_price
     { "errors" => { "price" => ["must be greater than 0"] } }
   end
-
-
-
 end

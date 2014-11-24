@@ -30,11 +30,6 @@ class LocalizationControllerTest < ActionController::TestCase
 
 
   private
-
-  def json_response
-    JSON.parse(@response.body)
-  end
-
   def create_localization(latitude_value, longitude_value)
     post :create, price_id: price, localization: {longitude: longitude_value, latitude: latitude_value }
   end
@@ -67,5 +62,4 @@ class LocalizationControllerTest < ActionController::TestCase
   def expected_response_with_invalid_coordinates
     { "errors" => {"latitude"=>["is not a number"], "longitude"=>["is not a number"]} }
   end
-
 end
