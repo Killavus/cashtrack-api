@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141124031001) do
+ActiveRecord::Schema.define(version: 20141124141725) do
 
   create_table "access_tokens", force: true do |t|
     t.string   "key"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 20141124031001) do
 
   create_table "sessions", force: true do |t|
     t.integer "user_id"
+    t.string  "secret"
   end
 
   add_index "sessions", ["user_id"], name: "index_sessions_on_user_id"
