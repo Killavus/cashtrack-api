@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141123194225) do
+ActiveRecord::Schema.define(version: 20141124031000) do
+
+  create_table "access_tokens", force: true do |t|
+    t.string   "key"
+    t.datetime "expires_at"
+    t.integer  "user_id"
+  end
+
+  add_index "access_tokens", ["key"], name: "index_access_tokens_on_key"
 
   create_table "budgets", force: true do |t|
     t.string   "name"
@@ -74,5 +82,10 @@ ActiveRecord::Schema.define(version: 20141123194225) do
   end
 
   add_index "shoppings", ["budget_id"], name: "index_shoppings_on_budget_id"
+
+  create_table "users", force: true do |t|
+    t.string "email",           null: false
+    t.string "password_digest"
+  end
 
 end
