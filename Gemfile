@@ -14,3 +14,4 @@ gem 'spring',           group: :development
 
 gem 'pg',      group: :production
 gem 'sqlite3', group: [:development, :test]
+gem 'bcrypt', '~> 3.1.7'
