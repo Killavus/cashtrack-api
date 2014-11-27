@@ -48,6 +48,7 @@ class AccessTokensTest < ActiveSupport::TestCase
   attr_reader :prepare_access_token, :authenticate_via_token
 
   def build_user
-    User.create(email: @email, password: @password)
+    register_user = RegisterUser.new
+    register_user.call(@email, @password)
   end
 end

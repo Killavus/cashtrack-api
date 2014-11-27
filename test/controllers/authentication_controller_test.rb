@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AuthenticationControllerTest < ActionController::TestCase
   def test_whether_it_gives_a_token_for_valid_credentials
-     build_credentials
+     build_user
 
      post :create, user: { email: @email, password: @password }
      token_key = json_response["token_key"]
@@ -31,10 +31,11 @@ class AuthenticationControllerTest < ActionController::TestCase
     }
   end
 
-  def build_credentials
-    @email = 'bob@example.me'
+  def build_user
+    @email = "foo@bar.com"
     @password = SecureRandom.hex
+    register_user = RegisterUser.new
+    register_user.call(@email, @password)
 
-    User.create(email: @email, password: @password)
   end
 end
