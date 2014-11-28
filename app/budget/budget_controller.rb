@@ -8,7 +8,7 @@ class BudgetController < ApplicationController
 
   def create
     session = Session.find(params[:session_id])
-    session.budgets << budget = Budget.create!(name: budget_params[:name])
+    session.budgets << Budget.create!(name: budget_params[:name])
     head :created
   rescue ActiveRecord::RecordInvalid => exc
     render_validation_errors(exc)
