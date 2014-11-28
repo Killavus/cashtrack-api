@@ -7,11 +7,15 @@ class BudgetController < ApplicationController
   end
 
   def create
-    Budget.create!(name: budget_params[:name])
+    session = Session.find(params[:session_id])
+    session.budgets << budget = Budget.create!(name: budget_params[:name])
     head :created
   rescue ActiveRecord::RecordInvalid => exc
     render_validation_errors(exc)
+  rescue ActiveRecord::RecordNotFound
+    head :not_found
   end
+
 
   private
   def budget_params

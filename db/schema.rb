@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20141127165607) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "session_id"
   end
 
   create_table "localizations", force: true do |t|

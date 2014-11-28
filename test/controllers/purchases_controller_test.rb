@@ -58,7 +58,12 @@ class PurchasesControllerTest < ActionController::TestCase
   end
 
   def budget
-    @budget ||= Budget.create!(name: "test")
+    @budget ||= Budget.create!(name: "test", session_id: session)
+  end
+
+  def session
+    establish_session = EstablishSession.new
+    establish_session.()
   end
 
   def shopping

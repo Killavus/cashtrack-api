@@ -31,7 +31,12 @@ class PaymentsControllerTest < ActionController::TestCase
 
   private
   def budget
-    @budget ||= Budget.create!(name: "Test")
+    @budget ||= Budget.create!(name: "test", session_id: session)
+  end
+
+  def session
+    establish_session = EstablishSession.new
+    establish_session.()
   end
 
   def create_payment(value)

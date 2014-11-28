@@ -21,4 +21,8 @@ Rails.application.routes.draw do
   end
 
   resources :authentication, only: [:create, :index]
+
+  resources :budget, only: [] do
+    resources :sessions
+  end
 end
