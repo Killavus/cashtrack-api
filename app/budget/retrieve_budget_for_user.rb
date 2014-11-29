@@ -1,24 +1,18 @@
 class RetrieveBudgetForUser
   SessionNotFound = Class.new(StandardError)
-  InvalidSecret = Class.new(StandardError)
 
   def call(user)
-    session = find_session(user)
-    find_budgets(session_id)
+    sessions = find_session(user)
+    find_session(user).map {|x| find_budgets(x)}.flatten
   end
 
-  def find_session(session_id)
-    session = Session.find_by(id: session_id)
-    raise SessionNotFound.new unless session.present?
+  def find_session(user)
+    session = Session.where(user_id: user.id)
+    raise SessionNotFound.new if session.empty?
+    session
   end
 
   def find_budgets(session_id)
-    budget = Budget.find_by(session_id: session_id)
-    budget.present? ? budget : []
+    budgets = Budget.where(session_id: session_id)
   end
-
-  def valid_secret?(session, secret)
-    session.secret == secret
-  end
-
 end
