@@ -9,11 +9,11 @@ class RetrieveBudgetsForSessionTest < ActionController::TestCase
 
   def test_retrieve_budgets_raises_error_when_token_invalid
     test_session = @session_establisher.()
-    assert_raises(RetrieveBudgetsForSession::TokenNotFound) { @retrieve_budget_for_session.(test_session.id, "invalid") }
+    assert_raises(RetrieveBudgetsForSession::InvalidSecret) { @retrieve_budget_for_session.(test_session.id, "invalid") }
   end
 
   def test_retrieve_budgets_raises_error_when_session_not_exist
-    assert_raises(RetrieveBudgetsForSession::TokenNotFound) { @retrieve_budget_for_session.(-1, "invalid") }
+    assert_raises(RetrieveBudgetsForSession::SessionNotFound) { @retrieve_budget_for_session.(-1, "invalid") }
   end
 
   def test_retrieve_budget_should_return_empty_list_when_no_bugets_found
@@ -26,9 +26,8 @@ class RetrieveBudgetsForSessionTest < ActionController::TestCase
     test_budget = Budget.create!(name: "test", session_id: test_session.id)
     test_budget2 = Budget.create!(name: "test2", session_id: test_session.id)
     retrieved_budgets = @retrieve_budget_for_session.(test_session.id, test_session.secret)
-
-    assert(retrieved_budgets.include? test_budget == true, "test_budget not exist in retrived budgets")
-    assert(retrieved_budgets.include? test_budget2 == true, "test_budget not exist in retrieved budgets")
+    assert(retrieved_budgets[0].name == test_budget.name, "test_budget not exist in retrived budgets")
+    assert(retrieved_budgets[1].name == test_budget2.name, "test_budget2 not exist in retrieved budgets")
   end
 
   def test_retrieve_should_return_right_numbers_of_budgets
