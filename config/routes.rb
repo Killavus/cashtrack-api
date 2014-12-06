@@ -4,25 +4,15 @@ Rails.application.routes.draw do
     resources :shopping, only: :create
 
   end
-  resources :shopping, only: [] do
-    resources :purchases, only: :create
-  end
-
-  resources :purchases, only: [] do
-    resources :products, only: :create
-  end
-
-  resources :product, only: [] do
-    resources :prices, only: :create
-  end
-
-  resources :prices, only:[] do
-    resources :localization, only: :create
-  end
 
   resources :authentication, only: [:create, :index]
 
   resources :budget, only: [] do
     resources :sessions
   end
+
+
+  get '/budgetoverview' => 'budgets_overview#show_for_user', constraints: UserConstraint
+  get '/budgetoverview' => 'budgets_overview#show_for_session', constraints: SessionConstraint
+
 end
