@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141127165607) do
+ActiveRecord::Schema.define(version: 20141205175311) do
 
   create_table "access_tokens", force: true do |t|
     t.string   "key"
@@ -60,16 +60,16 @@ ActiveRecord::Schema.define(version: 20141127165607) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "purchase_id"
     t.string   "bar_code"
   end
 
   create_table "purchases", force: true do |t|
-    t.integer  "price"
     t.integer  "shopping_id"
     t.integer  "shop_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "price_id"
+    t.integer  "product_id"
   end
 
   add_index "purchases", ["shopping_id"], name: "index_purchases_on_shopping_id"
