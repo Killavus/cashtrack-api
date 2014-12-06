@@ -6,6 +6,7 @@ class RetrieveBudgetForUser
     find_session(user).map {|x| find_budgets(x)}.flatten
   end
 
+  private
   def find_session(user)
     session = Session.where(user_id: user.id)
     raise SessionNotFound.new if session.empty?

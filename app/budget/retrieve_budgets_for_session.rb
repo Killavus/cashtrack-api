@@ -8,9 +8,10 @@ class RetrieveBudgetsForSession
     find_budgets(session_id)
   end
 
+  private
   def find_session(session_id)
     session = Session.find_by(id: session_id)
-    raise SessionNotFound.new unless session.present?
+    raise SessionNotFound.new('session not found') unless session.present?
     session
   end
 
