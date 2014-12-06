@@ -22,4 +22,8 @@ class ApplicationController < ActionController::Base
   def handle_not_existing_token(exception)
     render status: :forbidden, json: { error: { message: 'authentication token not found - obtain one using POST /authentication/create' } }
   end
+
+  def handle_invalid_session_secret
+    render status: :forbidden, json: { error: { message: 'session secret is invalid' } }
+  end
 end

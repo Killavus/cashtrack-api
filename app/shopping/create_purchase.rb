@@ -36,8 +36,6 @@ class CreatePurchase
 
   def create_product(product_params)
     if find_product(product_params)
-      puts find_product(product_params).bar_code
-      puts Product.find_by(bar_code: product_params[:bar_code])
       return @product = find_product(product_params)
     end
     @product = Product.create!(name: product_params[:name], bar_code: product_params[:bar_code])
