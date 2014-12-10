@@ -1,14 +1,13 @@
 class PaymentsController < ApplicationController
   def create
-    budget = Budget.find(params[:budget_id])
-    budget.payments << Payment.create!(value: payment_params[:value])
+    payment_creator = CreatePayment.new
+    payment_creator.create(payment_params[:value], payment_params[:budget_id])
     head :created
-  rescue ActiveRecord::RecordNotFound
-    head :not_found
-  rescue ActiveRecord::RecordInvalid => exception
-    render_validation_errors(exception)
+  rescue CreatePayment::BudgetNotExist
+    head :unprocessable_entity
+  rescue CreatePayment::InvalidPaymentValue
+    head :unprocessable_entity
   end
-
   private
   def payment_params
     params.require(:payment).permit(:value)
