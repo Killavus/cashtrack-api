@@ -3,9 +3,11 @@ class CreatePurchase
   InvalidLocalizationParams = Class.new(StandardError)
   InvalidPriceError = Class.new(StandardError)
   ShoppingNotExist = Class.new(StandardError)
+  ShoppingClosed = Class.new(StandardError)
 
   def create(price, product_params, localization_params, shopping_id)
     shopping = Shopping.find(shopping_id)
+    raise ShoppingClosed.new if shopping.end_date.present?
     ActiveRecord::Base.transaction do
       create_purchase
       @purchase.product = create_product(product_params)

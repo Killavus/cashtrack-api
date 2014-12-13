@@ -6,5 +6,15 @@ class ShoppingController < ApplicationController
   rescue CreateShopping::BudgetNotExist
     head :not_found
   end
+
+  def destroy
+    shopping = Shopping.find(params[:id])
+    return head :unprocessable_entity if shopping.end_date.present?
+    shopping.end_date = Date.today()
+    shopping.save!
+    head :ok
+  rescue ActiveRecord::RecordNotFound
+    head :not_found
+  end
 end
 

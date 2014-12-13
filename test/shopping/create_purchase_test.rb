@@ -57,6 +57,11 @@ class CreatePurchaseTest < ActionController::TestCase
     assert_raises(CreatePurchase::InvalidPriceError) { prepare_create_purchase_object.create(nil, {name: "valid", bar_code: "123"}, {longitude: 22, latitude: 32}, @shopping.id) }
   end
 
+  def test_object_should_raises_error_if_shopping_closed
+    test_shopping = Shopping.create!(start_date: Date.today(), end_date: Date.today())
+    assert_raises(CreatePurchase::ShoppingClosed) { prepare_create_purchase_object.create(nil, {name: "valid", bar_code: "123"}, {longitude: 22, latitude: 32}, test_shopping.id) }
+  end
+
   private
 
   def budget

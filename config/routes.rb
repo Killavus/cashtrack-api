@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   resources :authentication, only: [:create, :index]
 
+  resources :shopping, only: [:create, :destroy]
+
   resources :budget, only: [] do
     resources :sessions
   end

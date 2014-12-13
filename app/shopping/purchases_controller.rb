@@ -11,6 +11,8 @@ class PurchasesController < ApplicationController
     head :unprocessable_entity
   rescue CreatePurchase::InvalidProductParams
     head :unprocessable_entity
+  rescue CreatePurchase::ShoppingClosed
+    head :unprocessable_entity
   end
 
 
