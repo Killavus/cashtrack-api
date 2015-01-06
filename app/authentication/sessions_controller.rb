@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
   def create
     establish_session = EstablishSession.new
-    establish_session.()
-    head :created
+    session = establish_session.()
+    render json: { session_id: session.id, secret: session.secret }
   end
 end
