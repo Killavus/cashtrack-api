@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
   def current_session
     authenticated_user.current_session
-  rescue User::SessionNotFound
+  rescue User::SessionNotFound, AuthenticateViaToken::TokenInvalid, AuthenticateViaToken::TokenNotFound
     retrieve_current_session.(request.headers['X-Session-Id'], request.headers['X-Session-Token'])
   end
 
