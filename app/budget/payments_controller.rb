@@ -1,8 +1,8 @@
 class PaymentsController < ApplicationController
   def create
     payment_creator = CreatePayment.new
-    payment_creator.(payment_params[:value], params[:budget_id], current_session.id)
-    head :created
+    payment = payment_creator.(payment_params[:value], params[:budget_id], current_session.id)
+    render status: :created, json: { payment_id: payment.id }
   rescue CreatePayment::BudgetNotExist
     head :unprocessable_entity
   rescue CreatePayment::InvalidPaymentValue

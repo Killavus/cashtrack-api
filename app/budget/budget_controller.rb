@@ -8,9 +8,8 @@ class BudgetController < ApplicationController
 
   def create
     budget_creator = CreateBudget.new
-    budget_creator.call(budget_params[:name], current_session.id)
-    head :created
-
+    budget = budget_creator.call(budget_params[:name], current_session.id)
+    render status: :created, json: { budget_id: budget.id }
   rescue CreateBudget::SessionNotExist
     head :not_found
   rescue CreateBudget::InvalidBudgetName
