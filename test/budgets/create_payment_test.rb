@@ -11,23 +11,23 @@ class CreatePurchasesTest < ActionController::TestCase
   end
 
   def test_create_purchase_should_raises_error_if_invalid_value_given
-    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call(-2, budget.id, authorization_adapter)  }
+    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call(-2, budget.id)  }
   end
 
   def test_create_purchase_should_raises_error_if_no_value_given
-    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call(nil, budget.id, authorization_adapter) }
+    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call(nil, budget.id) }
   end
 
   def test_create_purchase_should_raises_error_if_budget_not_exist
-    assert_raises(CreatePayment::BudgetNotExist) { prepare_creating_object.call(4, -2, authorization_adapter)}
+    assert_raises(CreatePayment::BudgetNotExist) { prepare_creating_object.call(4, -2) }
   end
 
   def test_create_purchase_should_raises_error_if_no_int_value_given
-    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call("invalid", budget.id, authorization_adapter) }
+    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call("invalid", budget.id) }
   end
 
   def test_create_purchase_should_be_not_allowed_for_budgets_not_within_sessions
-    assert_raises(CreatePayment::NotAllowed) { prepare_creating_object.call(700, another_budget.id, authorization_adapter) }
+    assert_raises(CreatePayment::NotAllowed) { prepare_creating_object.call(700, another_budget.id) }
   end
 
   def create_budget
@@ -59,10 +59,10 @@ class CreatePurchasesTest < ActionController::TestCase
   end
 
   def payment(value, budget_id)
-    prepare_creating_object.(value, budget_id, authorization_adapter)
+    prepare_creating_object.(value, budget_id)
   end
 
   def prepare_creating_object
-    CreatePayment.new
+    CreatePayment.new(authorization_adapter)
   end
 end
