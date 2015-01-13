@@ -8,7 +8,7 @@ class BudgetController < ApplicationController
 
   def create
     budget_creator = CreateBudget.new
-    budget_creator.create(params[:name], params[:session_id])
+    budget_creator.create(params[:name], current_session.id)
     head :created
 
   rescue CreateBudget::SessionNotExist
@@ -16,7 +16,6 @@ class BudgetController < ApplicationController
   rescue CreateBudget::InvalidBudgetName
     head :unprocessable_entity
   end
-
 
   private
   def budget_params

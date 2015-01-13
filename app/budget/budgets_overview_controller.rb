@@ -28,6 +28,6 @@ class BudgetsOverviewController < ApplicationController
 
   def prepare_budgets_for_session
     retrieving_budgets = RetrieveBudgetsForSession.new
-    retrieving_budgets.(request.headers['X-Session-Id'], request.headers['X-Session-secret'] )
+    retrieving_budgets.(request.headers['X-Session-Id'], request.headers['X-Session-Secret'] )
   end
 end
