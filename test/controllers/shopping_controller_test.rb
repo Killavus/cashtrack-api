@@ -21,8 +21,8 @@ class ShoppingControllerTest < ActionController::TestCase
 
   private
   def shopping
-    shopping_creator = CreateShopping.new
-    @shopping = shopping_creator.create(budget.id)
+    shopping_creator = CreateShopping.new(authorization_adapter)
+    @shopping = shopping_creator.call(budget.id)
   end
 
   def budget
@@ -30,8 +30,15 @@ class ShoppingControllerTest < ActionController::TestCase
     @budget ||= budget_creator.call("valid", session.id)
   end
 
+  def authorization_adapter
+    AuthorizationAdapter.new.use(SessionAuthorizationStrategy.new(session))
+  end
+
+  def session_establisher
+    EstablishSession.new
+  end
+
   def session
-    session_establisher = EstablishSession.new
-    session_establisher.()
+    @session ||= session_establisher.()
   end
 end

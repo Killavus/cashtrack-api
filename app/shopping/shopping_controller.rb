@@ -1,10 +1,12 @@
 class ShoppingController < ApplicationController
   def create
-    shopping_creator = CreateShopping.new
-    shopping_creator.create(params[:budget_id])
+    shopping_creator = CreateShopping.new(authorization_adapter)
+    shopping_creator.call(params[:budget_id])
     head :created
   rescue CreateShopping::BudgetNotExist
     head :not_found
+  rescue CreateShopping::NotAllowed
+    head :forbidden
   end
 
   def destroy

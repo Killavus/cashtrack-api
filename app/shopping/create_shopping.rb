@@ -1,10 +1,17 @@
 class CreateShopping < ApplicationController
   BudgetNotExist = Class.new(StandardError)
+  NotAllowed = Class.new(StandardError)
 
-  def create(budget_id)
+  def initialize(authorization_adapter)
+    @authorization_adapter = authorization_adapter
+  end
+
+  def call(budget_id)
+    budget = find_budget(budget_id)
+    raise NotAllowed.new unless authorization_adapter.has_access_to_budget?(budget)
     shopping = prepare_shopping
     shopping.start_date = Date.today
-    find_budget(budget_id).shopping << shopping
+    budget.shopping << shopping
     shopping
 
   rescue ActiveRecord::RecordNotFound
@@ -16,6 +23,9 @@ class CreateShopping < ApplicationController
   end
 
   def prepare_shopping
-    Shopping.create!()
+    Shopping.create!
   end
+
+  private
+  attr_reader :authorization_adapter
 end
