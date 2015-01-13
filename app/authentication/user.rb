@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   validates :password, length: { minimum: 3 }, on: :create
 
   has_many :sessions
+  has_many :budgets, through: :sessions, dependent: :destroy
   has_secure_password
 
   def current_session
