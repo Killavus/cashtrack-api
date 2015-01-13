@@ -11,11 +11,11 @@ class CreatePurchasesTest < ActionController::TestCase
   end
 
   def test_create_purchase_should_raises_error_if_invalid_value_given
-    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call(-2, @budget.id, session.id)  }
+    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call(-2, budget.id, session.id)  }
   end
 
   def test_create_purchase_should_raises_error_if_no_value_given
-    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call(nil, @budget.id, session.id) }
+    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call(nil, budget.id, session.id) }
   end
 
   def test_create_purchase_should_raises_error_if_budget_not_exist
@@ -23,7 +23,11 @@ class CreatePurchasesTest < ActionController::TestCase
   end
 
   def test_create_purchase_should_raises_error_if_no_int_value_given
-    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call("invalid", @budget.id, session.id) }
+    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call("invalid", budget.id, session.id) }
+  end
+
+  def test_create_purchase_should_be_not_allowed_for_budgets_not_within_sessions
+    assert_raises(CreatePayment::NotAllowed) { prepare_creating_object.call(700, another_budget.id, session.id) }
   end
 
   def create_budget
@@ -32,6 +36,14 @@ class CreatePurchasesTest < ActionController::TestCase
 
   def budget
     @budget ||= create_budget.("test", session.id)
+  end
+
+  def another_budget
+    @another_budget ||= create_budget.("test 2", another_session.id)
+  end
+
+  def another_session
+    @another_session ||= establish_session.()
   end
 
   def session

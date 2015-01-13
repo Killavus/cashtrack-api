@@ -18,7 +18,7 @@ class CreatePayment
   private
   def authorize(session_id, budget_id)
     Session.find_by(id: session_id).tap do |session|
-      raise NotAllowed.new unless session.budget_ids.include?(budget_id)
+      raise NotAllowed.new unless session.budget_ids.include?(Integer(budget_id))
     end
   end
 
