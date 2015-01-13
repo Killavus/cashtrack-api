@@ -27,7 +27,7 @@ class ShoppingControllerTest < ActionController::TestCase
 
   def budget
     budget_creator = CreateBudget.new
-    @budget ||= budget_creator.create("valid", session.id)
+    @budget ||= budget_creator.call("valid", session.id)
   end
 
   def session

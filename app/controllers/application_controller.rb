@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   def current_session
     authenticated_user.current_session
   rescue User::SessionNotFound, AuthenticateViaToken::TokenInvalid, AuthenticateViaToken::TokenNotFound
-    retrieve_current_session.(request.headers['X-Session-Id'], request.headers['X-Session-Token'])
+    retrieve_current_session.(request.headers['X-Session-Id'], request.headers['X-Session-Secret'])
   end
 
   def authenticate_via_token
@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
   end
 
   def handle_not_found_session(_)
-    render status: :forbidden, json: { error: { message: "can't find session - make sure you've created it or authenticate correctly and pass an authentication token or X-Session-Id/X-Session-Token headers pair." } }
+    render status: :forbidden, json: { error: { message: "can't find session - make sure you've created it or authenticate correctly and pass an authentication token or X-Session-Id/X-Session-Secret headers pair." } }
   end
 
   def handle_invalid_session_secret

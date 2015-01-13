@@ -2,7 +2,7 @@ class CreateBudget
   SessionNotExist = Class.new(StandardError)
   InvalidBudgetName = Class.new(StandardError)
 
-  def create(name, session_id)
+  def call(name, session_id)
     budget = prepare_budget(name)
     find_session(session_id).budgets << budget
     budget

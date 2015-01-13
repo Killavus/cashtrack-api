@@ -1,12 +1,14 @@
 class CreatePayment
   BudgetNotExist = Class.new(StandardError)
   InvalidPaymentValue = Class.new(StandardError)
+  NotAllowed = Class.new(StandardError)
 
-  def create(value, budget_id)
+  def call(value, budget_id, session_id)
+    budget = find_budget(budget_id)
+    authorize(session_id, budget_id)
     payment = create_payment(value)
-    find_budget(budget_id).payments << payment
+    budget.payments << payment
     payment
-
   rescue ActiveRecord::RecordNotFound
     raise BudgetNotExist.new('budget not exist')
   rescue ActiveRecord::RecordInvalid
@@ -14,6 +16,12 @@ class CreatePayment
   end
 
   private
+  def authorize(session_id, budget_id)
+    Session.find_by(id: session_id).tap do |session|
+      raise NotAllowed.new unless session.budget_ids.include?(budget_id)
+    end
+  end
+
   def find_budget(budget_id)
     Budget.find(budget_id)
   end
