@@ -63,14 +63,20 @@ class CreatePurchaseTest < ActionController::TestCase
   end
 
   private
-
   def budget
     @budget ||= Budget.create!(name: "test", session_id: session)
   end
 
+  def establish_session
+    EstablishSession.new
+  end
+
   def session
-    establish_session = EstablishSession.new
-    establish_session.()
+    @session ||= establish_session.()
+  end
+
+  def authorization_adapter
+    AuthorizationAdapter.new.use(SessionAuthorizationStrategy.new(session))
   end
 
   def shopping
@@ -78,6 +84,6 @@ class CreatePurchaseTest < ActionController::TestCase
   end
 
   def prepare_create_purchase_object
-    CreatePurchase.new
+    CreatePurchase.new(authorization_adapter)
   end
 end

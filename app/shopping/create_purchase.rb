@@ -5,8 +5,13 @@ class CreatePurchase
   ShoppingNotExist = Class.new(StandardError)
   ShoppingClosed = Class.new(StandardError)
 
+  def initialize(authorization_adapter)
+    @authorization_adapter = authorization_adapter
+  end
+
   def create(price, product_params, localization_params, shopping_id)
     shopping = Shopping.find(shopping_id)
+    raise NotAllowed.new if authorization_adapter.has_access_to_budget?(shopping.budget)
     raise ShoppingClosed.new if shopping.end_date.present?
     ActiveRecord::Base.transaction do
       create_purchase
@@ -24,6 +29,8 @@ class CreatePurchase
   end
 
   private
+  attr_reader :authorization_adapter
+
   def create_price(price)
     @price = Price.create!(value: price)
   rescue ActiveRecord::RecordInvalid
