@@ -3,9 +3,9 @@ class CreatePayment
   InvalidPaymentValue = Class.new(StandardError)
   NotAllowed = Class.new(StandardError)
 
-  def call(value, budget_id, session_id)
+  def call(value, budget_id, authorization_adapter)
     budget = find_budget(budget_id)
-    authorize(session_id, budget_id)
+    raise NotAllowed.new unless authorization_adapter.has_access_to_budget?(budget)
     payment = create_payment(value)
     budget.payments << payment
     payment
@@ -16,12 +16,6 @@ class CreatePayment
   end
 
   private
-  def authorize(session_id, budget_id)
-    Session.find_by(id: session_id).tap do |session|
-      raise NotAllowed.new unless session.budget_ids.include?(Integer(budget_id))
-    end
-  end
-
   def find_budget(budget_id)
     Budget.find(budget_id)
   end

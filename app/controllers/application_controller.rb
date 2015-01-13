@@ -4,10 +4,6 @@ class ApplicationController < ActionController::Base
   rescue_from RetrieveCurrentSession::SessionNotFound, with: :handle_not_found_session
 
   protected
-  def render_validation_errors(exception)
-    render status: :unprocessable_entity, json: { errors: exception.record.errors.messages }
-  end
-
   def authenticated_user
     authenticate_via_token.(request.headers['X-Authentication-Token'])
   end
@@ -18,12 +14,23 @@ class ApplicationController < ActionController::Base
     retrieve_current_session.(request.headers['X-Session-Id'], request.headers['X-Session-Secret'])
   end
 
+  def authorization_adapter
+    @authorization_adapter ||= AuthorizationAdapter.new
+    @authorization_adapter.use(UserAuthorizationStrategy.new(authenticated_user))
+  rescue AuthenticateViaToken::TokenInvalid, AuthenticateViaToken::TokenNotFound
+    @authorization_adapter.use(SessionAuthorizationStrategy.new(current_session))
+  end
+
   def authenticate_via_token
     AuthenticateViaToken.new
   end
 
   def retrieve_current_session
     RetrieveCurrentSession.new
+  end
+
+  def render_validation_errors(exception)
+    render status: :unprocessable_entity, json: { errors: exception.record.errors.messages }
   end
 
   def handle_invalid_token(exception)
