@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141205175311) do
+ActiveRecord::Schema.define(version: 20150113153516) do
 
   create_table "access_tokens", force: true do |t|
     t.string   "key"
@@ -20,6 +20,14 @@ ActiveRecord::Schema.define(version: 20141205175311) do
   end
 
   add_index "access_tokens", ["key"], name: "index_access_tokens_on_key"
+
+  create_table "budget_closeds", force: true do |t|
+    t.integer  "budget_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "budget_closeds", ["budget_id"], name: "index_budget_closeds_on_budget_id"
 
   create_table "budgets", force: true do |t|
     t.string   "name"

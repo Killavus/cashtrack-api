@@ -15,6 +15,17 @@ class BudgetController < ApplicationController
     head :unprocessable_entity
   end
 
+  def destroy
+    close_budget.(params[:id])
+    head :ok
+  rescue CloseBudget::AlreadyClosed
+    head :unprocessable_entity
+  rescue CloseBudget::NotFound
+    head :not_found
+  rescue CloseBudget::NotAllowed
+    head :forbidden
+  end
+
   private
   def budget_params
     params.require(:budget).permit(:name)
@@ -22,5 +33,9 @@ class BudgetController < ApplicationController
 
   def open_budget
     OpenBudget.new
+  end
+
+  def close_budget
+    CloseBudget.new(authorization_adapter)
   end
 end
