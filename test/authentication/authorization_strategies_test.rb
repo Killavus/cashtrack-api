@@ -3,7 +3,7 @@ require 'test_helper'
 class AuthorizationStrategiesTest < ActiveSupport::TestCase
   def test_raises_an_error_if_no_strategy_used
     session = establish_session.()
-    budget = create_budget.('Budget', session.id)
+    budget = open_budget.('Budget', session.id)
     adapter = AuthorizationAdapter.new
 
     assert_raises(AuthorizationAdapter::StrategyRequired) { adapter.has_access_to_budget?(budget) }
@@ -15,9 +15,9 @@ class AuthorizationStrategiesTest < ActiveSupport::TestCase
     session_2 = establish_session.()
     session_3 = establish_session.()
 
-    budget_1 = create_budget.('Budget #1', session_1.id)
-    budget_2 = create_budget.('Budget #2', session_2.id)
-    budget_3 = create_budget.('Budget #3', session_3.id)
+    budget_1 = open_budget.('Budget #1', session_1.id)
+    budget_2 = open_budget.('Budget #2', session_2.id)
+    budget_3 = open_budget.('Budget #3', session_3.id)
 
     link_session_with_user.(session_1.id, session_1.secret, user.id)
     link_session_with_user.(session_2.id, session_2.secret, user.id)
@@ -36,8 +36,8 @@ class AuthorizationStrategiesTest < ActiveSupport::TestCase
     session_1 = establish_session.()
     session_2 = establish_session.()
 
-    budget_1 = create_budget.('Budget #1', session_1.id)
-    budget_2 = create_budget.('Budget #2', session_2.id)
+    budget_1 = open_budget.('Budget #1', session_1.id)
+    budget_2 = open_budget.('Budget #2', session_2.id)
 
     session_1.reload
 
@@ -73,7 +73,7 @@ class AuthorizationStrategiesTest < ActiveSupport::TestCase
     LinkSessionWithUser.new
   end
 
-  def create_budget
-    CreateBudget.new
+  def open_budget
+    OpenBudget.new
   end
 end

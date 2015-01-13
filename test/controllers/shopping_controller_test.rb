@@ -1,6 +1,9 @@
 require 'test_helper'
 
 class ShoppingControllerTest < ActionController::TestCase
+  def setup
+    set_session_headers(session)
+  end
 
   def test_delete_should_close_shopping
     delete :destroy, id: shopping.id
@@ -14,19 +17,19 @@ class ShoppingControllerTest < ActionController::TestCase
   end
 
   def test_delete_should_show_error_when_shopping_already_closed
-    test_shopping = Shopping.create!(start_date: Date.today(), end_date: Date.today())
+    test_shopping = start_shopping.(budget.id)
+    finish_shopping.(test_shopping.id)
     delete :destroy, id: test_shopping.id
     assert_response :unprocessable_entity
   end
 
   private
   def shopping
-    shopping_creator = CreateShopping.new(authorization_adapter)
-    @shopping = shopping_creator.call(budget.id)
+    @shopping = start_shopping.call(budget.id)
   end
 
   def budget
-    budget_creator = CreateBudget.new
+    budget_creator = OpenBudget.new
     @budget ||= budget_creator.call("valid", session.id)
   end
 
@@ -34,11 +37,24 @@ class ShoppingControllerTest < ActionController::TestCase
     AuthorizationAdapter.new.use(SessionAuthorizationStrategy.new(session))
   end
 
-  def session_establisher
+  def establish_session
     EstablishSession.new
   end
 
+  def start_shopping
+    StartShopping.new(authorization_adapter)
+  end
+
+  def finish_shopping
+    FinishShopping.new(authorization_adapter)
+  end
+
   def session
-    @session ||= session_establisher.()
+    @session ||= establish_session.()
+  end
+
+  def set_session_headers(session)
+    request.headers['X-Session-Id'] = session.id
+    request.headers['X-Session-Secret'] = session.secret
   end
 end

@@ -1,4 +1,4 @@
-class CreateShopping < ApplicationController
+class StartShopping < ApplicationController
   BudgetNotExist = Class.new(StandardError)
   NotAllowed = Class.new(StandardError)
 

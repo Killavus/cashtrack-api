@@ -1,22 +1,33 @@
 class ShoppingController < ApplicationController
   def create
-    shopping_creator = CreateShopping.new(authorization_adapter)
-    shopping_creator.call(params[:budget_id])
+    start_shopping.(params[:budget_id])
     head :created
-  rescue CreateShopping::BudgetNotExist
+  rescue StartShopping::BudgetNotExist
     head :not_found
-  rescue CreateShopping::NotAllowed
+  rescue StartShopping::NotAllowed
     head :forbidden
   end
 
   def destroy
-    shopping = Shopping.find(params[:id])
-    return head :unprocessable_entity if shopping.end_date.present?
-    shopping.end_date = Date.today()
-    shopping.save!
+    finish_shopping.(params[:id])
     head :ok
+  rescue FinishShopping::NotFound
+    head :not_found
+  rescue FinishShopping::NotAllowed
+    head :forbidden
+  rescue FinishShopping::AlreadyFinished
+    head :unprocessable_entity
   rescue ActiveRecord::RecordNotFound
     head :not_found
+  end
+
+  private
+  def start_shopping
+    StartShopping.new(authorization_adapter)
+  end
+
+  def finish_shopping
+    FinishShopping.new(authorization_adapter)
   end
 end
 

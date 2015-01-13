@@ -16,7 +16,7 @@ class BudgetsOverviewController < ApplicationController
 
   private
   def prepare_overview(budgets)
-    prepare_budgets_overview = PrepareBudgetOverviewObject.new
+    prepare_budgets_overview = PresentBudgetOverview.new
     prepare_budgets_overview.prepare_for_budgets(budgets)
   end
 

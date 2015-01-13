@@ -1,21 +1,24 @@
 class PurchasesController < ApplicationController
   def create
-    create_purchase = CreatePurchase.new
-    create_purchase.create(purchase_params[:price], purchase_params[:product_params], purchase_params[:localization_params], params[:shopping_id])
+    make_purchase.(purchase_params[:price], purchase_params[:product_params], purchase_params[:localization_params], params[:shopping_id])
     head :created
-  rescue CreatePurchase::ShoppingNotExist
+  rescue MakePurchase::ShoppingNotFound
     head :not_found
-  rescue CreatePurchase::InvalidPriceError
+  rescue MakePurchase::InvalidPriceError
     head :unprocessable_entity
-  rescue CreatePurchase::InvalidLocalizationParams
+  rescue MakePurchase::InvalidLocalizationParams
     head :unprocessable_entity
-  rescue CreatePurchase::InvalidProductParams
+  rescue MakePurchase::InvalidProductParams
     head :unprocessable_entity
-  rescue CreatePurchase::ShoppingClosed
+  rescue MakePurchase::ShoppingClosed
     head :unprocessable_entity
   end
 
   private
+  def make_purchase
+    MakePurchase.new
+  end
+
   def purchase_params
     params.require(:purchase).permit(:price, product_params: [:name, :bar_code], localization_params: [:longitude, :latitude])
   end

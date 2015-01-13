@@ -1,5 +1,5 @@
-class CreateBudget
-  SessionNotExist = Class.new(StandardError)
+class OpenBudget
+  SessionNotFound = Class.new(StandardError)
   InvalidBudgetName = Class.new(StandardError)
 
   def call(name, session_id)
@@ -8,7 +8,7 @@ class CreateBudget
     budget
 
   rescue ActiveRecord::RecordNotFound
-    raise SessionNotExist.new('session not exist')
+    raise SessionNotFound.new('session not found')
   rescue ActiveRecord::RecordInvalid
     raise InvalidBudgetName.new('budget name is invalid')
   end

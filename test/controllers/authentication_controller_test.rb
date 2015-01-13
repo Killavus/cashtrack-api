@@ -36,6 +36,5 @@ class AuthenticationControllerTest < ActionController::TestCase
     @password = SecureRandom.hex
     register_user = RegisterUser.new
     register_user.call(@email, @password)
-
   end
 end

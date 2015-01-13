@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CreatePurchasesTest < ActionController::TestCase
+class AddingPaymentTest < ActionController::TestCase
   def setup
     @payment = payment(4, budget.id)
   end
@@ -11,35 +11,35 @@ class CreatePurchasesTest < ActionController::TestCase
   end
 
   def test_create_purchase_should_raises_error_if_invalid_value_given
-    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call(-2, budget.id)  }
+    assert_raises(AddPayment::InvalidPaymentValue) { add_payment.(-2, budget.id)  }
   end
 
   def test_create_purchase_should_raises_error_if_no_value_given
-    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call(nil, budget.id) }
+    assert_raises(AddPayment::InvalidPaymentValue) { add_payment.(nil, budget.id) }
   end
 
   def test_create_purchase_should_raises_error_if_budget_not_exist
-    assert_raises(CreatePayment::BudgetNotExist) { prepare_creating_object.call(4, -2) }
+    assert_raises(AddPayment::BudgetNotFound) { add_payment.(4, -2) }
   end
 
   def test_create_purchase_should_raises_error_if_no_int_value_given
-    assert_raises(CreatePayment::InvalidPaymentValue) { prepare_creating_object.call("invalid", budget.id) }
+    assert_raises(AddPayment::InvalidPaymentValue) { add_payment.("invalid", budget.id) }
   end
 
   def test_create_purchase_should_be_not_allowed_for_budgets_not_within_sessions
-    assert_raises(CreatePayment::NotAllowed) { prepare_creating_object.call(700, another_budget.id) }
+    assert_raises(AddPayment::NotAllowed) { add_payment.(700, another_budget.id) }
   end
 
-  def create_budget
-    CreateBudget.new
+  def open_budget
+    OpenBudget.new
   end
 
   def budget
-    @budget ||= create_budget.("test", session.id)
+    @budget ||= open_budget.("test", session.id)
   end
 
   def another_budget
-    @another_budget ||= create_budget.("test 2", another_session.id)
+    @another_budget ||= open_budget.("test 2", another_session.id)
   end
 
   def another_session
@@ -59,10 +59,14 @@ class CreatePurchasesTest < ActionController::TestCase
   end
 
   def payment(value, budget_id)
-    prepare_creating_object.(value, budget_id)
+    add_payment.(value, budget_id)
   end
 
-  def prepare_creating_object
-    CreatePayment.new(authorization_adapter)
+  def add_payment
+    AddPayment.new(authorization_adapter)
+  end
+
+  def open_budget
+    OpenBudget.new
   end
 end

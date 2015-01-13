@@ -1,5 +1,5 @@
-class CreatePayment
-  BudgetNotExist = Class.new(StandardError)
+class AddPayment
+  BudgetNotFound = Class.new(StandardError)
   InvalidPaymentValue = Class.new(StandardError)
   NotAllowed = Class.new(StandardError)
 
@@ -14,7 +14,7 @@ class CreatePayment
     budget.payments << payment
     payment
   rescue ActiveRecord::RecordNotFound
-    raise BudgetNotExist.new('budget not exist')
+    raise BudgetNotFound.new('budget not found')
   rescue ActiveRecord::RecordInvalid
     raise InvalidPaymentValue.new('invalid payment value')
   end

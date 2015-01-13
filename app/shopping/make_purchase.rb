@@ -1,15 +1,15 @@
-class CreatePurchase
+class MakePurchase
   InvalidProductParams = Class.new(StandardError)
   InvalidLocalizationParams = Class.new(StandardError)
   InvalidPriceError = Class.new(StandardError)
-  ShoppingNotExist = Class.new(StandardError)
+  ShoppingNotFound = Class.new(StandardError)
   ShoppingClosed = Class.new(StandardError)
 
   def initialize(authorization_adapter)
     @authorization_adapter = authorization_adapter
   end
 
-  def create(price, product_params, localization_params, shopping_id)
+  def call(price, product_params, localization_params, shopping_id)
     shopping = Shopping.find(shopping_id)
     raise NotAllowed.new if authorization_adapter.has_access_to_budget?(shopping.budget)
     raise ShoppingClosed.new if shopping.end_date.present?
@@ -25,7 +25,7 @@ class CreatePurchase
       @purchase
     end
   rescue ActiveRecord::RecordNotFound
-    raise ShoppingNotExist.new('shopping not exist')
+    raise ShoppingNotFound.new('shopping not exist')
   end
 
   private

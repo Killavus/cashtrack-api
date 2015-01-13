@@ -7,17 +7,20 @@ class BudgetController < ApplicationController
   end
 
   def create
-    budget_creator = CreateBudget.new
-    budget = budget_creator.call(budget_params[:name], current_session.id)
+    budget = open_budget.(budget_params[:name], current_session.id)
     render status: :created, json: { budget_id: budget.id }
-  rescue CreateBudget::SessionNotExist
+  rescue OpenBudget::SessionNotFound
     head :not_found
-  rescue CreateBudget::InvalidBudgetName
+  rescue OpenBudget::InvalidBudgetName
     head :unprocessable_entity
   end
 
   private
   def budget_params
     params.require(:budget).permit(:name)
+  end
+
+  def open_budget
+    OpenBudget.new
   end
 end

@@ -1,4 +1,4 @@
-class PrepareBudgetOverviewObject
+class PresentBudgetOverview
 
   def prepare_for_budgets(budgets)
     prepare_object

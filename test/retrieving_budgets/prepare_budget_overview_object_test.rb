@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PrepareBudgetOverviewObjectTest < ActionController::TestCase
   def setup
-    @prepare_budget_overview_object = PrepareBudgetOverviewObject.new
+    @prepare_budget_overview_object = PresentBudgetOverview.new
 
   end
 

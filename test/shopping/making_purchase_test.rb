@@ -1,10 +1,10 @@
 require 'test_helper'
 
-class CreatePurchaseTest < ActionController::TestCase
+class MakingPurchaseTest < ActionController::TestCase
 
   def setup
     @create_purchase = prepare_create_purchase_object
-    @purchase = @create_purchase.create(10,{name: "valid", bar_code: "12345"}, {latitude: 34.2, longitude: 24.4}, shopping.id)
+    @purchase = @create_purchase.call(10,{name: "valid", bar_code: "12345"}, {latitude: 34.2, longitude: 24.4}, shopping.id)
   end
 
   def test_object_should_create_purchase_price_product_and_localization
@@ -30,36 +30,36 @@ class CreatePurchaseTest < ActionController::TestCase
   end
 
   def test_object_should_raises_error_if_no_product_params_given
-    assert_raises(CreatePurchase::InvalidProductParams) { prepare_create_purchase_object.create(10, {}, {longitude: 22, latitude: 32}, @shopping.id) }
+    assert_raises(MakePurchase::InvalidProductParams) { prepare_create_purchase_object.call(10, {}, {longitude: 22, latitude: 32}, @shopping.id) }
   end
 
   def test_object_should_raises_error_if_no_localization_params_given
-    assert_raises(CreatePurchase::InvalidLocalizationParams) { prepare_create_purchase_object.create(10, {name: "valid", bar_code: "123"}, {}, @shopping.id) }
+    assert_raises(MakePurchase::InvalidLocalizationParams) { prepare_create_purchase_object.call(10, {name: "valid", bar_code: "123"}, {}, @shopping.id) }
   end
 
   def test_object_should_raises_error_if_no_price_given
-    assert_raises(CreatePurchase::InvalidPriceError) { prepare_create_purchase_object.create(nil, {name: "valid", bar_code: "123"}, {longitude: 22, latitude: 32}, @shopping.id) }
+    assert_raises(MakePurchase::InvalidPriceError) { prepare_create_purchase_object.call(nil, {name: "valid", bar_code: "123"}, {longitude: 22, latitude: 32}, @shopping.id) }
   end
 
   def test_object_should_raises_error_if_Shopping_not_exist
-    assert_raises(CreatePurchase::ShoppingNotExist) { prepare_create_purchase_object.create(10, {name: "valid", bar_code: "123"}, {longitude: 22, latitude: 32}, -2) }
+    assert_raises(MakePurchase::ShoppingNotFound) { prepare_create_purchase_object.call(10, {name: "valid", bar_code: "123"}, {longitude: 22, latitude: 32}, -2) }
   end
 
   def test_object_should_raises_error_if_invalid_products_params_given
-    assert_raises(CreatePurchase::InvalidProductParams) { prepare_create_purchase_object.create(10, {}, {longitude: 22, latitude: 32}, @shopping.id) }
+    assert_raises(MakePurchase::InvalidProductParams) { prepare_create_purchase_object.call(10, {}, {longitude: 22, latitude: 32}, @shopping.id) }
   end
 
   def test_object_should_raises_error_if_invalid_localization_params_given
-    assert_raises(CreatePurchase::InvalidLocalizationParams) { prepare_create_purchase_object.create(10, {name: "valid", bar_code: "123"}, {}, @shopping.id) }
+    assert_raises(MakePurchase::InvalidLocalizationParams) { prepare_create_purchase_object.call(10, {name: "valid", bar_code: "123"}, {}, @shopping.id) }
   end
 
   def test_object_should_raises_error_if_invalid_price_given
-    assert_raises(CreatePurchase::InvalidPriceError) { prepare_create_purchase_object.create(nil, {name: "valid", bar_code: "123"}, {longitude: 22, latitude: 32}, @shopping.id) }
+    assert_raises(MakePurchase::InvalidPriceError) { prepare_create_purchase_object.call(nil, {name: "valid", bar_code: "123"}, {longitude: 22, latitude: 32}, @shopping.id) }
   end
 
   def test_object_should_raises_error_if_shopping_closed
     test_shopping = Shopping.create!(start_date: Date.today(), end_date: Date.today())
-    assert_raises(CreatePurchase::ShoppingClosed) { prepare_create_purchase_object.create(nil, {name: "valid", bar_code: "123"}, {longitude: 22, latitude: 32}, test_shopping.id) }
+    assert_raises(MakePurchase::ShoppingClosed) { prepare_create_purchase_object.call(nil, {name: "valid", bar_code: "123"}, {longitude: 22, latitude: 32}, test_shopping.id) }
   end
 
   private
@@ -84,6 +84,6 @@ class CreatePurchaseTest < ActionController::TestCase
   end
 
   def prepare_create_purchase_object
-    CreatePurchase.new(authorization_adapter)
+    MakePurchase.new(authorization_adapter)
   end
 end
