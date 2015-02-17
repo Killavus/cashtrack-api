@@ -7,6 +7,7 @@ class PresentBudgetOverview
       budget_overview[:name] = budget.name
       budget_overview[:payments] = payments_list(budget)
       budget_overview[:shopping] = shopping_list(budget)
+      budget_overview[:id] = budget.id
       @budget_overview.add_budget(budget_overview)
     end
     return @budget_overview
