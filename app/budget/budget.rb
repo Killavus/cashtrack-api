@@ -2,7 +2,7 @@ class Budget < ActiveRecord::Base
   has_many :payments, dependent: :destroy
   has_many :shopping, dependent: :destroy
   has_one :budget_closed, dependent: :destroy
-  belongs_to :session, dependent: :destroy
+  belongs_to :session
 
   validates :name, presence: true, length: { minimum: 3 }
 
