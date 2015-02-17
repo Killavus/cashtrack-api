@@ -9,9 +9,9 @@ class BudgetsOverviewController < ApplicationController
     overview = prepare_overview(prepare_budgets_for_session)
     render json: overview
   rescue RetrieveBudgetsForSession::InvalidSecret
-    render json: { errors: { message: 'session secret is invalid' } }
+    render json: { errors: { message: 'session secret is invalid' } }, status: :forbidden
   rescue RetrieveBudgetsForSession::SessionNotFound
-    render json: { errors: { message: 'there is no session for that id' } }
+    render json: { errors: { message: 'there is no session for that id' } }, status: :forbidden
   end
 
   private
