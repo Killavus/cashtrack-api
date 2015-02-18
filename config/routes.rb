@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :authentication, only: [:create, :index] do
     collection do
-      post :map_with_user
+      post :link_with_user
     end
   end
 
