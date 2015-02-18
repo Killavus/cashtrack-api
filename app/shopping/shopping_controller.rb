@@ -1,7 +1,7 @@
 class ShoppingController < ApplicationController
   def create
-    start_shopping.(params[:budget_id])
-    head :created
+    shopping = start_shopping.(params[:budget_id])
+    render json: { shopping_id: shopping.id }, status: :created
   rescue StartShopping::BudgetNotExist
     head :not_found
   rescue StartShopping::NotAllowed
