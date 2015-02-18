@@ -27,7 +27,7 @@ class AuthenticationControllerTest < ActionController::TestCase
   def expected_user_response
     {
       "email" => @email,
-      "sessions" => []
+      "id" => 1
     }
   end
 
