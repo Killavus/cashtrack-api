@@ -27,7 +27,7 @@ class PresentBudgetOverview
   end
 
   def hash_for_payment(payment)
-    {value: payment.value, date: payment.created_at}
+    {id: payment.id, value: payment.value, date: payment.created_at}
   end
 
   def shopping_list(budget)
@@ -37,7 +37,7 @@ class PresentBudgetOverview
   end
 
   def hash_for_shopping(shopping)
-    {start_date: shopping.start_date, end_date: shopping.end_date, products: products_for_shopping(shopping)}
+    {id: shopping.id, start_date: shopping.start_date, end_date: shopping.end_date, products: products_for_shopping(shopping)}
   end
 
   def products_for_shopping(shopping)
