@@ -8,8 +8,8 @@ class AuthenticationController < ApplicationController
 
   def index
     render json: {
-             email: authenticated_user.email,
-             sessions: authenticated_user.session_ids
+             id: authenticated_user.id,
+             email: authenticated_user.email
            }
   end
 
