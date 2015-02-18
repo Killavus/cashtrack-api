@@ -51,7 +51,7 @@ class PresentBudgetOverview
   end
 
   def hash_for_product(product)
-    {product_name: product.name, bar_code: product.bar_code, localization: localization_for_product(product)}
+    {product_id: product.id, product_name: product.name, bar_code: product.bar_code, localization: localization_for_product(product)}
   end
 
   def localization_for_product(product)
