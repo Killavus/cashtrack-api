@@ -1,7 +1,7 @@
 class PurchasesController < ApplicationController
   def create
-    make_purchase.(purchase_params[:price], purchase_params[:product_params], purchase_params[:localization_params], params[:shopping_id])
-    head :created
+    purchase = make_purchase.(purchase_params[:price], purchase_params[:product_params], purchase_params[:localization_params], params[:shopping_id])
+    render json: { purchase_id: purchase.id }
   rescue MakePurchase::ShoppingNotFound
     head :not_found
   rescue MakePurchase::InvalidPriceError
